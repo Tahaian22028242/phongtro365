@@ -16,6 +16,8 @@ const postsRouter = require("./routes/Posts");
 app.use("/post", postsRouter);
 const bookingsRouter = require("./routes/Bookings");
 app.use("/booking", bookingsRouter);
+const adminRouter = require("./routes/Admin");
+app.use("/admin-api", adminRouter);
 
 // Global error handling middleware
 app.use((err, req, res, next) => {
