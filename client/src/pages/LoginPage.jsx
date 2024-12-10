@@ -13,15 +13,18 @@ export default function LoginPage() {
     try {
       const {data} = await axios.post('/auth/login', {email,password});
       setUser(data);
-      alert('Login successful');
+      alert('Đăng nhập thành công!');
       setRedirect(true);
     } catch (e) {
-      alert('Login failed');
+      if (e.response) {
+        return alert(e.response.data.message);
+      }
+      // alert('Đăng nhập thất bại!');
     }
   }
 
   if (redirect) {
-    return <Navigate to={'/'} />
+    return <Navigate to={'/home'} />;
   }
 
   return (

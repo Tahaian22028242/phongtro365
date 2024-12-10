@@ -25,6 +25,23 @@ function BookingPage() {
     }
   return (
     <div className='mt-4 bg-gray-100 -mx-8 px-8 py-8'>
+        <header>
+        <div class="logo">
+            <img src="Logo_HUET.svg" alt="Logo Đại học Công nghệ" class="logo-img"></img>
+            <span><strong>PhongTro365</strong></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Đăng tin</a></li>
+                <li><a href="#">Tìm nhà</a></li>
+                <li><a href="#">Quản lý thuê</a></li>
+            </ul>
+        </nav>
+        <div class="user-options">
+            <span class="notification">&#128276;</span>
+            <span class="user-profile">&#9675;</span>
+        </div>
+    </header>
         <h1 className='text-3xl'>{place.title}</h1>
         <a className='flex gap-1 my-2 font-semibold underline' target='_blank' href={'https://maps.google.com/?q='+place.address}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">

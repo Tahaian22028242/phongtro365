@@ -24,8 +24,7 @@ model User {
 model Place {
   id          Int          @id @default(autoincrement())
   owner       User         @relation("UserPlaces", fields: [ownerId], references: [id], onDelete: Cascade) // Khi xóa User, xóa Place
-  ownerId     Int
-  title       String
+  ownerId     Int          
   address     String
   latitude    Decimal?
   longitude   Decimal?

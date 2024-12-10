@@ -16,6 +16,7 @@ import BookingsPage from './pages/BookingsPage'
 import BookingPage from './pages/BookingPage'
 import PlaceDetail from './pages/PlaceDetail'
 import ProfileVisitPage from './pages/ProfileVisitPage'
+import MainPage from './pages/MainPage'
 
 axios.defaults.baseURL = 'http://localhost:4000'
 axios.defaults.withCredentials = true
@@ -29,8 +30,9 @@ function App() {
   return (
     <UserContextProvider>
       <Routes>
-        <Route path='/' element={<Layout />}>
-          <Route index element={<IndexPage />} />
+        <Route path='' element={<Layout />}>
+          <Route index element={<MainPage />} />
+          <Route path='/home' element={<IndexPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
           <Route path='/listhome' element={<ListHome />} />

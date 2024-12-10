@@ -1,0 +1,24 @@
+.slick-dots {
+    bottom: 25px;
+  }
+  
+  .slick-dots li button:before {
+    color: white;
+    font-size: 12px;
+  }
+  
+  .slick-dots li.slick-active button:before {
+    color: white;
+  }
+  
+  .slick-prev, .slick-next {
+    z-index: 1;
+  }
+  
+  .slick-prev {
+    left: 25px;
+  }
+  
+  .slick-next {
+    right: 25px;
+  }
