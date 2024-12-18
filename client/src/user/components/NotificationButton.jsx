@@ -39,7 +39,7 @@ const NotificationButton = () => {
         setUnreadCount(response.data.unreadCount);
         
       } catch (error) {
-        console.error("Error fetching notifications:", error);
+        console.error("Lỗi thông báo: ", error);
       } finally {
         setLoading(false);
       }

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // db, dùng trong mọi trang
-const {PrismaClient} = require('@prisma/client')
+const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 const bcrypt = require('bcryptjs')
@@ -12,22 +12,41 @@ router.use(cookieParser())
 const bcryptSalt = bcrypt.genSaltSync(10)
 const jwtSecret = 'fhdjskahdfjkdsafhjdshakjhf'
 
+// Hàm tạo tài khoản admin
+router.post('/create-admin', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const hashedPassword = bcrypt.hashSync(password, bcryptSalt);
+        const newAdmin = await prisma.admin.create({
+            data: {
+                email: email,
+                password: hashedPassword,
+                createById: null, // Assuming this is the first admin and not created by another admin
+            },
+        });
+        res.json(newAdmin);
+    } catch (error) {
+        res.status(500).json({ error: 'Error creating admin' });
+    }
+});
+
+// Hàm tạo thông báo
 const createNotification = async (userId, type, message, placeId = null) => {
     let parsedPlaceId
-    if(typeof placeId === 'number') parsedPlaceId = placeId
-    else if(typeof placeId !== 'number') parsedPlaceId = parseInt(placeId)
+    if (typeof placeId === 'number') parsedPlaceId = placeId
+    else if (typeof placeId !== 'number') parsedPlaceId = parseInt(placeId)
 
     try {
-      await prisma.notification.create({
-        data: {
-          userId,
-          type,
-          message,
-          placeId: parsedPlaceId,  // Lưu placeId nếu có
-        },
-      });
+        await prisma.notification.create({
+            data: {
+                userId,
+                type,
+                message,
+                placeId: parsedPlaceId,  // Lưu placeId nếu có
+            },
+        });
     } catch (error) {
-      console.error("Error creating notification", error);
+        console.error("Error creating notification", error);
     }
 };
 
@@ -42,13 +61,14 @@ router.get('/check-admin', async (req, res) => {
 
 })
 
+// Hàm tạo tài khoản admin
 router.post('/register', async (req, res) => {
-    const {email, password} = req.body
-    const {tokenAdmin} = req.cookies
+    const { email, password } = req.body
+    const { tokenAdmin } = req.cookies
 
-    if(tokenAdmin!=='') {
-        jwt.verify(tokenAdmin, jwtSecret, {} , async (err, adminData) => {
-            if(err) throw err
+    if (tokenAdmin !== '') { // Nếu đã đăng nhập
+        jwt.verify(tokenAdmin, jwtSecret, {}, async (err, adminData) => {
+            if (err) throw err
             const newAdmin = await prisma.admin.create({
                 data: {
                     email,
@@ -66,21 +86,21 @@ router.post('/register', async (req, res) => {
             }
         })
     }
-    
+
     res.json('not')
-    
+
 })
 
 router.post('/login', async (req, res) => {
-    const {email, password} = req.body
+    const { email, password } = req.body
     const adminDoc = await prisma.admin.findUnique({
-        where: {email: email}
+        where: { email: email }
     })
-    if(adminDoc) {
+    if (adminDoc) {
         const passOk = bcrypt.compareSync(password, adminDoc.password)
-        if(passOk) {
-            jwt.sign({email:adminDoc.email, id:adminDoc.id}, jwtSecret, {}, (err, tokenAdmin) => {
-                if(err) throw err
+        if (passOk) {
+            jwt.sign({ email: adminDoc.email, id: adminDoc.id }, jwtSecret, {}, (err, tokenAdmin) => {
+                if (err) throw err
                 res.cookie('tokenAdmin', tokenAdmin).json(adminDoc)
             })
         } else {
@@ -214,7 +234,7 @@ router.post('/delete-place/:placeId', async (req, res) => {
         // Cập nhật các booking có trạng thái APPROVED thành RENTED
         await prisma.booking.updateMany({
             where: { placeId: parseInt(placeId), status: 'APPROVED' },
-            data: { 
+            data: {
                 status: 'RENTED',
                 checkOut: new Date()
             },

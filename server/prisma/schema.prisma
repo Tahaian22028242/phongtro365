@@ -62,22 +62,6 @@ enum ReportStatus {
 }
 
 model Place {
-<<<<<<< HEAD
-  id          Int          @id @default(autoincrement())
-  owner       User         @relation("UserPlaces", fields: [ownerId], references: [id], onDelete: Cascade) // Khi xóa User, xóa Place
-  ownerId     Int          
-  address     String
-  latitude    Decimal?
-  longitude   Decimal?
-  area        Int // diện tích
-  photos      PlacePhoto[] @relation("PlacePhotos") // Khi xóa Place, xóa Photo liên quan
-  description String
-  perks       PlacePerk[]  @relation("PlacePerks") // Khi xóa Place, xóa Perk liên quan
-  extraInfo   String
-  duration    Int // thời hạn hợp đồng
-  price       Int
-  bookings    Booking[]    @relation("PlaceBookings") // Khi xóa Place, xóa Booking liên quan
-=======
   id           Int            @id @default(autoincrement())
   owner        User           @relation("UserPlaces", fields: [ownerId], references: [id], onDelete: Cascade) // Khi xóa User, xóa Place
   ownerId      Int
@@ -105,7 +89,6 @@ enum PlaceStatus {
   SEE
   HIDDEN
   DELETE // xóa do report nhé
->>>>>>> 856db7a22c050424d1ade53b57682979b380587c
 }
 
 model PlacePhoto {

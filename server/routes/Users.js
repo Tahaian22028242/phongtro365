@@ -10,7 +10,6 @@ const path = require('path')
 const parPath = path.join(__dirname, '..')
 router.use('/uploads', express.static(path.join(parPath, 'uploads')))
 
-// cái này chỉ dùng trong trang này thôi
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
