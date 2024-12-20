@@ -21,7 +21,7 @@ function ProtectedRoute({ children }) {
 
   if (!ready && hasAdmin) {
     // Có thể hiển thị một spinner hoặc trạng thái "loading" trong khi chờ dữ liệu
-    return <div>Loading...</div>;
+    return <div>Đang tải...</div>;
   }
 
   if (!admin && hasAdmin) {

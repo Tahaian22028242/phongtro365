@@ -5,6 +5,7 @@ import PriceRangeSelector from "../components/PriceRangeSelector";
 import MapIndexPage from "../components/MapIndexPage";
 import { BASE_URL } from "../../config";
 import PlaceImg from "../components/PlaceImg";
+import Banner from "../components/Banner";
 
 function IndexPage() {
   const [places, setPlaces] = useState([]); // Tất cả places từ API
@@ -106,7 +107,7 @@ function IndexPage() {
   // Xử lý trường hợp dữ liệu chưa tải xong
   if (minPrice === null || maxPrice === null) {
     return <div>Đang tải dữ liệu...</div>;
-  } else if(minPrice === 0 && maxPrice === 0) {
+  } else if (minPrice === 0 && maxPrice === 0) {
     return (
       <div>
         <div>

@@ -14,6 +14,7 @@ import ProfileVisitPage from './pages/ProfileVisitPage';
 import { RedirectIfAuthenticated } from './components/RedirectIfAuthenticated';
 import { RequireAuth } from './components/RequireAuth';
 import FavouritePage from './pages/FavouritePage';
+import Banner from './components/Banner';
 
 axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
@@ -24,8 +25,8 @@ function App() {
       <Routes>
         {/* Route công khai không yêu cầu đăng nhập */}
         <Route path="/" element={<Layout />}>
-          <Route index element={<IndexPage />} />
-          
+          <Route index element={<Banner />} />
+          <Route path="/home" element={<IndexPage />} />
           <Route
             path="/login"
             element={
@@ -45,8 +46,8 @@ function App() {
         </Route>
 
         {/* Route yêu cầu đăng nhập */}
-        <Route 
-          path="/" 
+        <Route
+          path="/"
           element={
             <RequireAuth>
               <Layout />
