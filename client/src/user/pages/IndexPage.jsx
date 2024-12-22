@@ -110,7 +110,7 @@ function IndexPage() {
   } else if (minPrice === 0 && maxPrice === 0) {
     return (
       <div>
-        <div>
+        <div className="flex flex-col items-center justify-center h-96 gap-4">
           <p>Chào mừng bạn tới website của chúng tôi.</p>
           <p>Bạn là người đầu tiên, vì vậy hãy tạo nhà để sử dụng website.</p>
           <button
@@ -118,7 +118,7 @@ function IndexPage() {
               // Điều hướng đến trang thêm nhà
               window.location.href = "/account/places/new";
             }}
-            className="bg-blue-500 text-white p-2 rounded"
+            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
           >
             Thêm nhà mới
           </button>

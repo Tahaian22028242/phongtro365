@@ -1,133 +1,65 @@
-import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
-import axios from "axios";
-import { UserContext } from "../components/UserContext";
+import React, { useState } from 'react';
 
-export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { setUser } = useContext(UserContext);
-  const [isBlacklisted, setIsBlacklisted] = useState(false); // Trạng thái BLACKLISTED
-  const [blacklistedMessage, setBlacklistedMessage] = useState(""); // Thông báo cho BLACKLISTED
-  const [errors, setErrors] = useState({ email: "", password: "" }); // State lỗi cho email và password
+function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
-  async function handleLoginSubmit(ev) {
-    ev.preventDefault();
-
-    // Kiểm tra nếu có trường không hợp lệ
-    let isValid = true;
-    const newErrors = { email: "", password: "" };
-
-    if (!email) {
-      newErrors.email = "Email không được để trống!";
-      isValid = false;
-    }
-    if (!password) {
-      newErrors.password = "Mật khẩu không được để trống!";
-      isValid = false;
-    }
-
-    if (!isValid) {
-      setErrors(newErrors);
-      return; // Dừng việc gửi yêu cầu nếu có lỗi
-    }
-
-    // Nếu tất cả trường hợp lệ, tiếp tục gửi yêu cầu đăng nhập
-    try {
-      const { data } = await axios.post("/auth/login", { email, password });
-
-      if (data.user.status === "BLACKLISTED") {
-        setIsBlacklisted(true); // Hiển thị popup thông báo
-        setBlacklistedMessage("Tài khoản của bạn đã bị khóa vĩnh viễn.");
-      } else {
-        setUser(data.user);
-        alert("Đăng nhập thành công");
-        window.location.reload();
-      }
-    } catch (error) {
-      if (error.response) {
-        const { status, data } = error.response;
-
-        if (status === 403 && data.status === "BLACKLISTED") {
-          setIsBlacklisted(true); // Hiển thị popup nếu BLACKLISTED
-          setBlacklistedMessage(data.error);
-        } else {
-          alert(data.error || "Đăng nhập thất bại. Vui lòng thử lại.");
-        }
-      } else {
-        alert("Có lỗi xảy ra. Vui lòng thử lại.");
-      }
-    }
-  }
-
-  async function handleLogout() {
-    window.location.reload();
-  }
-
-  // Hàm để reset lỗi khi người dùng nhập lại
-  const handleEmailChange = (ev) => {
-    setEmail(ev.target.value);
-    if (ev.target.value) {
-      setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
-    }
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (ev) => {
-    setPassword(ev.target.value);
-    if (ev.target.value) {
-      setErrors((prevErrors) => ({ ...prevErrors, password: "" }));
-    }
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    // Validate inputs and handle login logic here
   };
 
   return (
-    <div className="mt-4 grow flex items-center justify-around">
-      <div className="mb-64">
-        <h1 className="text-4xl text-center mb-4">Login</h1>
-        <form className="max-w-md mx-auto" onSubmit={handleLoginSubmit}>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 className="text-4xl text-center mb-6 font-bold text-gray-800">Đăng nhập</h1>
+        <form className="space-y-6" onSubmit={handleLoginSubmit}>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
-              placeholder="your@email.com"
+              id="email"
+              placeholder="Nhập email của bạn"
               value={email}
               onChange={handleEmailChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
             {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
-
-
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
             <input
               type="password"
-              placeholder="password"
+              id="password"
+              placeholder="Nhập mật khẩu của bạn"
               value={password}
               onChange={handlePasswordChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
             {errors.password && <span className="text-red-500 text-sm">{errors.password}</span>}
-
-
-          <button type="submit" className="primary">Login</button>
-
-          <div className="text-center py-2 text-gray-500">
-            Don't have an account yet?{" "}
-            <Link className="underline text-black" to={"/register"}>
-              Register now
-            </Link>
           </div>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Đăng nhập
+          </button>
         </form>
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Chưa có tài khoản? <a href="/register" className="text-blue-600 hover:text-blue-500">Đăng ký</a>
+        </p>
       </div>
-
-      {/* Popup hiển thị nếu tài khoản bị khóa */}
-      {isBlacklisted && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded shadow-md w-96">
-            <h2 className="text-xl font-semibold text-red-500 mb-4">Thông báo</h2>
-            <p className="mb-4">{blacklistedMessage}</p>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
+
+export default LoginPage;

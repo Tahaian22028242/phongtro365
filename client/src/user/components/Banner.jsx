@@ -7,18 +7,18 @@ import { Link } from 'react-router-dom';
 function Banner() {
   const slides = [
     {
-      title: "Welcome to Phongtro365",
-      description: "Nền tảng hỗ trợ tra cứu và quản lý phòng trọ",
-      image: "/images/thiet-ke-phong-tro-dep.jpg"
+      title: "Chào mừng đến với Phongtro365",
+      description: "Kết nối bền chặt giữa chủ nhà và người thuê",
+      image: "/images/thiet-ke-nha-tro-dep.jpg"
     },
     {
-      title: "Tìm phòng trọ dễ dàng",
-      description: "Đa dạng lựa chọn phòng trọ tại Hà Nội",
+      title: "Tìm phòng trọ tiện lợi, nhanh chóng",
+      description: "Hệ thống phòng trọ đa dạng, phong phú",
       image: "/images/phong-tro-dep.jpg"
     },
     {
-      title: "Quản lý hiệu quả",
-      description: "Công cụ quản lý hiệu quả cho chủ nhà",
+      title: "Quản lý dễ dàng, hiệu quả",
+      description: "Công cụ quản lý tuyệt vời cho chủ nhà",
       image: "/images/noi-that-phong-tro1.jpg"
     }
   ];
@@ -31,7 +31,12 @@ function Banner() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 5000,
-    fade: true
+    fade: true,
+    appendDots: dots => (
+      <div style={{ position: 'absolute', bottom: '0px', width: '100%' }}>
+        <ul style={{ margin: '0px' }}> {dots} </ul>
+      </div>
+    ),
   };
 
   return (
@@ -39,8 +44,8 @@ function Banner() {
     <Slider {...settings}>
       {slides.map((slide, index) => (
         <div key={index} className="relative h-[500px] flex items-center bg-gradient-to-r from-blue-500 to-purple-600">
-          <div className="w-full h-full flex items-center justify-center p-8 text-white bg-black bg-opacity-50">
-            <div>
+          <div className="flex items-center justify-center p-8 text-white bg-black bg-opacity-50">
+            <div className='w-full h-1/2'>
               <h2 className="text-4xl font-bold mb-4">{slide.title}</h2>
               <p className="text-xl mb-6">{slide.description}</p>
               <ul className="text-lg font-semibold space-y-4">
@@ -65,7 +70,9 @@ function Banner() {
                 </button>
               </Link>
             </div>
-            <img src={slide.image} alt={slide.title} className="w-full h-full object-contain" />
+            <div className="w-full h-full">
+              <img src={slide.image} alt={slide.title} className="object-contain" />
+            </div>
         </div>
       </div>
       ))}
